@@ -15,15 +15,15 @@ players = pd.read_csv('data/players.csv')
 players_results = pd.read_csv('data/playersResults.csv')[['tournamentId', 'teamId','playerName']].drop_duplicates()
 teams = pd.read_csv('data/teams.csv')
 
-ranked_coef = st.slider('кеф ранкеда', 1., 2., step=.1)
-adr_coef = st.slider('отношение adr/лвл', 1, 50)
+# ranked_coef = st.slider('кеф ранкеда', 1., 2., step=.1)
+# adr_coef = st.slider('отношение adr/лвл', 1, 50)
 show_pros = st.checkbox('показать нонеймов')
 
 players_df = pub_stats.join(players.set_index('playerId'), on='playerId')
 players_df['totalRoundsPlayed'] = players_df['roundsPlayed_normal'] + players_df['roundsPlayed_ranked']
 players_df = players_df.replace({'totalRoundsPlayed': {0: 999}})
 # players_df['rating'] = (players_df['damageDealt_normal'] * players_df['roundsPlayed_normal'] + players_df['damageDealt_ranked'] * players_df['roundsPlayed_ranked'] * ranked_coef) / (players_df['totalRoundsPlayed']) * (adr_coef / (adr_coef + 1)) + players_df['level'] * (1 / (adr_coef + 1))
-players_df['rating'] = (players_df['damageDealt_normal'] * players_df['roundsPlayed_normal'] + players_df['damageDealt_ranked'] * players_df['roundsPlayed_ranked'] * ranked_coef) / (players_df['totalRoundsPlayed']) * (5.43) + players_df['level'] * (0.32)
+players_df['rating'] = (players_df['damageDealt_normal'] * players_df['roundsPlayed_normal'] + players_df['damageDealt_ranked'] * players_df['roundsPlayed_ranked'] * 1.2) / (players_df['totalRoundsPlayed']) * (5.43) + players_df['level'] * (0.32)
 players_df = players_results.join(players_df.set_index(['playerName']), on='playerName', how='right').reset_index()
 players_df = players_df.join(teams.set_index(['tournamentId', 'teamId']), on=['tournamentId', 'teamId'])
 players_df_unique_teams = players_df.drop(['tournamentId', 'teamId'], axis=1).drop_duplicates()
