@@ -25,7 +25,7 @@ players_df = players_df.replace({'totalRoundsPlayed': {0: 999}})
 players_df['rating'] = (players_df['damageDealt_normal'] * players_df['roundsPlayed_normal'] + players_df['damageDealt_ranked'] * players_df['roundsPlayed_ranked'] * ranked_coef) / (players_df['totalRoundsPlayed']) * (adr_coef / (adr_coef + 1)) + players_df['level'] * (1 / (adr_coef + 1))
 players_df = players_results.join(players_df.set_index(['playerName']), on='playerName')
 players_df = players_df.join(teams.set_index(['tournamentId', 'teamId']), on=['tournamentId', 'teamId'])
-
+players_df_unique_teams = players_df.drop(['tournamentId', 'teamId'], axis=1).drop_duplicates()
 
 players_column_config = {
     'playerName': 'Игровой ник', 
@@ -46,9 +46,9 @@ players_column_order = (
     'damageDealt_normal',
     'damageDealt_ranked',
 )
-st.write('asd')
+
 st.dataframe(
-    players_df if show_pros else players_df[~players_df['isPro']],
+    players_df_unique_teams if show_pros else players_df_unique_teams[~players_df_unique_teams['isPro']],
     column_config=players_column_config,
     column_order=players_column_order,
 )
