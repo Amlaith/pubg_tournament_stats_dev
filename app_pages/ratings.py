@@ -31,20 +31,20 @@ players_column_config = {
     'playerName': 'Игровой ник', 
     'teamName': 'team',
     'rating': 'rating', 
-    'isPro': 'нонейм',
     'damageDealt_normal': 'ADR normal',
     'damageDealt_ranked': 'ADR ranked',
     'level': 'lvl',
+    'isPro': 'нонейм',
 }
 
 players_column_order = (
     'playerName',
     'teamName',
     'rating',
-    'isPro',
     'level',
     'damageDealt_normal',
     'damageDealt_ranked',
+    'isPro',
 )
 
 st.dataframe(
