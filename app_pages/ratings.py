@@ -2,7 +2,7 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 
-pub_stats = pd.read_csv('data\pub_stats.csv')[[
+pub_stats = pd.read_csv('data/pub_stats.csv')[[
         'playerId',
         'isPro',
         'level',
@@ -11,7 +11,7 @@ pub_stats = pd.read_csv('data\pub_stats.csv')[[
         'roundsPlayed_normal',
         'roundsPlayed_ranked',
     ]]
-players = pd.read_csv('data\players.csv')
+players = pd.read_csv('data/players.csv')
 players_results = pd.read_csv('data/playersResults.csv')[['tournamentId', 'teamId','playerName']].drop_duplicates()
 teams = pd.read_csv('data/teams.csv')
 
