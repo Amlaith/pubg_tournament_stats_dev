@@ -85,11 +85,12 @@ gazcup_2a = st.Page("app_pages/1_GazCup_2a.py", title="GAZ CUP #2, лобби A"
 gazcup_2b = st.Page("app_pages/2_GazCup_2b.py", title="GAZ CUP #2, лобби B", icon=":material/table:")
 ratings = st.Page("app_pages/ratings.py", title="Таблица рейтинга", icon=":material/table:")
 sandbox = st.Page("app_pages/sandbox.py", title="peep", icon=":material/help:")
+registration = st.Page("app_pages/registration.py", title="Зарегистрировать команду", icon=":material/group_add:")
 
 
 pg = st.navigation(
         {
-            "GAZ CUP": [homepage, ratings, sandbox],
+            "GAZ CUP": [homepage, ratings, sandbox, registration],
             "Актуальные турниры": [gazcup_2a, gazcup_2b],
             "Архив": [gazcup_1],
         }
