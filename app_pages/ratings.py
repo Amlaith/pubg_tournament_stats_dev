@@ -88,7 +88,7 @@ damage_coef = st.slider('damage_coef', 0.001, 0.1, step=0.0005)
 st.write(damage_coef)
 kills_coef = st.slider('kills_coef', 0.01, 2., step=0.005)
 st.write(kills_coef)
-rank_coef = st.slider('kills_coef', 0.1, 5., step=0.05)
+rank_coef = st.slider('placement_coef', 0.1, 5., step=0.05)
 st.write(rank_coef)
 
 results['rankedPoints'] = (results['damageDealt'] - 121) * damage_coef + (results['kills'] - 0.88) * kills_coef + (1 - results['relativeRank']) * rank_coef
