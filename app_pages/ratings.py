@@ -76,3 +76,53 @@ teams_column_order = (
 st.dataframe(players_results, column_order=teams_column_order, column_config=teams_column_config)
 
 
+#############################################
+st.write('----------------------------------------------------')
+st.subheader('Изменение рейтинга')
+results = pd.read_csv('data/playersResults.csv').drop(['DBNOs', 'assists', 'longestKill', 'revives', 'timeSurvived'], axis=1)
+teams_results = pd.read_csv('data/teamsResults.csv')
+results = results.join(teams_results.set_index(['tournamentId', 'matchNum', 'teamId']), on=['tournamentId', 'matchNum', 'teamId'])
+results['relativeRank'] = results['rank'] / results['tournamentId'].apply(lambda x: results.groupby('tournamentId')['rank'].max().loc[x])
+
+damage_coef = st.slider('damage_coef', 0.001, 0.1, step=0.0005)
+st.write(damage_coef)
+kills_coef = st.slider('kills_coef', 0.01, 2., step=0.005)
+st.write(kills_coef)
+rank_coef = st.slider('kills_coef', 0.1, 5., step=0.05)
+st.write(rank_coef)
+
+results['rankedPoints'] = (results['damageDealt'] - 121) * damage_coef + (results['kills'] - 0.88) * kills_coef + (1 - results['relativeRank']) * rank_coef
+results['damagePoints'] = (results['damageDealt'] - 121) * damage_coef 
+results['killsPoints'] = (results['kills'] - 0.88) * kills_coef
+results['rankPoints'] = (1 - results['relativeRank']) * rank_coef
+
+st.dataframe(results.drop('relativeRank', axis=1))
+
+
+changed_rating = players_df_unique_teams.join(results.groupby('playerName')['rankedPoints'].sum(), on='playerName')
+changed_rating['currentRating'] = changed_rating['rating'] + changed_rating['rankedPoints']
+changed_column_order = [
+    'playerName',
+    'rating',
+    'rankedPoints',
+    'currentRating'
+]
+st.dataframe(changed_rating, column_order = changed_column_order)
+
+players_results = pd.read_csv('data/playersResults.csv')[['tournamentId', 'teamId','playerName']].drop_duplicates()
+teams_changed_rating = players_results.join(changed_rating[['playerName', 'currentRating']].set_index('playerName'), on='playerName')
+teams_changed_rating = teams_changed_rating.groupby(['tournamentId', 'teamId']).agg({'currentRating': lambda x: (sum(x ** 2)) ** (1/2) })
+teams_changed_rating = teams_changed_rating.join(teams.set_index(['tournamentId', 'teamId']), on=['tournamentId', 'teamId']).reset_index()
+
+
+teams_changed_column_config = {
+    'currentRating': st.column_config.NumberColumn('changed rating', format='%.0f'), 
+}
+
+teams_changed_column_order = (
+    'tournamentId',
+    'teamName',
+    'currentRating',
+)
+
+st.dataframe(teams_changed_rating, column_order=teams_changed_column_order, column_config=teams_changed_column_config)
