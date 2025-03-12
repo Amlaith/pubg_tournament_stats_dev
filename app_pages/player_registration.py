@@ -3,12 +3,10 @@ import pandas as pd
 
 from streamlit_gsheets import GSheetsConnection
 
-st.title('Регистрация команды')
+st.title('Подбор команды')
 
 st.write('Заполните эту форму, если в вашей команде меньше четырех человек. Мы свяжемся с вами и поможем найти команду.')
 
-conn = st.connection("gsheets", type=GSheetsConnection)
-player_registration_worksheet = 'people_to_match'
 # st.write(conn)
 # st.help(conn)
 
@@ -35,9 +33,9 @@ with st.form(key='my_form'):
     
     st.write('-----------------------------------------')
 
-    agreed = st.checkbox('Все игроки прочитали правила регистрации и обязуются их соблюдать')
+    # agreed = st.checkbox('Все игроки прочитали правила регистрации и обязуются их соблюдать')
     
-    submitted = st.form_submit_button("Submit", )
+    submitted = st.form_submit_button("Отправить заявку", )
     if submitted:
         new_data = pd.DataFrame({
             'teamName' : team_name,
@@ -63,13 +61,15 @@ with st.form(key='my_form'):
                 [steam_link_2] if player_name_3 else []
             ),
         })
-        st.cache_data.clear()
+        conn = st.connection("gsheets", type=GSheetsConnection)
+        player_registration_worksheet = 'people_to_match'
         current_df = conn.read(worksheet=player_registration_worksheet)
         df_to_write = pd.concat([current_df, new_data])
         # st.dataframe(df_to_write)
         df = conn.update(worksheet=player_registration_worksheet, data=df_to_write)
         st.cache_data.clear()
-        st.rerun()
+        st.success('Спасибо за регистрацию! Мы рассмотрим вашу заявку и свяжемся с вами.')
+        # st.rerun()
 
 
 

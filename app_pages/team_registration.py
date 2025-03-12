@@ -5,10 +5,9 @@ from streamlit_gsheets import GSheetsConnection
 
 st.title('Регистрация команды')
 
-st.write('Если в вашей команде меньше четырех человек, заполните форму во вкладке "Подбор команды".')
+st.write('Заполните эту форму, если в вашей команде есть четыре человека.')
+st.markdown("""Если в вашей команде меньше четырех человек, заполните форму во вкладке <a href="https://gazcup.streamlit.app/~/+/player_registration" target = "_self" rel="noopener noreferrer">Подбор команды</a>.""", unsafe_allow_html=True)
 
-conn = st.connection("gsheets", type=GSheetsConnection)
-team_registration_worksheet = 'full_teams'
 # st.write(conn)
 # st.help(conn)
 
@@ -45,9 +44,9 @@ with st.form(key='my_form'):
     
     st.write('-----------------------------------------')
 
-    agreed = st.checkbox('Все игроки команды прочитали правила регистрации и обязуются их соблюдать')
+    # agreed = st.checkbox('Все игроки команды прочитали правила регистрации и обязуются их соблюдать')
     
-    submitted = st.form_submit_button("Submit", )
+    submitted = st.form_submit_button("Отправить заявку", )
     if submitted:
         new_data = pd.DataFrame({
             'teamName' : team_name,
@@ -70,24 +69,14 @@ with st.form(key='my_form'):
                 steam_link_4,
             ] + ([steam_link_5] if player_name_5 else []), 
         })
-        # st.write('text1')
-        st.session_state.submitted = True
-        # st.write('text2')
-        st.cache_data.clear()
-        st.success('Спасибо за регистрацию! Мы рассмотрим вашу заявку и свяжемся с капитаном.')
-        # st.write('text3')
+        
+        conn = st.connection("gsheets", type=GSheetsConnection)
+        team_registration_worksheet = 'full_teams'
         current_df = conn.read(worksheet=team_registration_worksheet)
         df_to_write = pd.concat([current_df, new_data])
         df = conn.update(worksheet=team_registration_worksheet, data=df_to_write)
-        # st.cache_data.clear()
-        # st.write('text4')
-        # st.session_state.submitted = True
-        # if st.session_state.submitted == True:
-        #     st.success('Спасибо за регистрацию! Мы рассмотрим вашу заявку и свяжемся с капитаном.')
-        # st.write('text5')
-        # sleep(5)
-        # st.rerun()
-        # st.write('text6')
+        st.cache_data.clear()
+        st.success('Спасибо за регистрацию! Мы рассмотрим вашу заявку и свяжемся с капитаном.')
 
 
 

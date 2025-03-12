@@ -39,7 +39,7 @@ def main():
         st.subheader('Контакты')
         st.markdown("""
                     [Telegram](https://t.me/gazcupPUBG)  
-                    [Discord](https://discord.gg/gSUJckTg)  
+                    [Discord](https://discord.gg/FmB39jz7rz)  
                     [Twitch](https://www.twitch.tv/gazbro27)  
                     """)
 
