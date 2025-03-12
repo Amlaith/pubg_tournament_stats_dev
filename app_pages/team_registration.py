@@ -6,7 +6,7 @@ from streamlit_gsheets import GSheetsConnection
 st.title('Регистрация команды')
 
 st.write('Заполните эту форму, если в вашей команде есть четыре человека.')
-st.markdown("""Если в вашей команде меньше четырех человек, заполните форму во вкладке <a href="https://gazcup.streamlit.app/~/+/player_registration" target = "_self" rel="noopener noreferrer">Подбор команды</a>.""", unsafe_allow_html=True)
+st.markdown("""Если в вашей команде меньше четырех человек, заполните форму во вкладке <a href="https://gazcup-dev.streamlit.app/~/+/player_registration" target = "_self" rel="noopener noreferrer">Подбор команды</a>.""", unsafe_allow_html=True)
 
 # st.write(conn)
 # st.help(conn)
